@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportCommunity - Demo Interactivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navbar */
+        nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Main Content */
+        .header {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 20px;
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+            margin-top: 0.5rem;
+        }
+
+        /* Form */
+        .form-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: #27ae60;
+        }
+
+        .btn-secondary:hover {
+            background: #229954;
+        }
+
+        /* Rutas */
+        .route-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .route-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .route-info {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .route-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 0.5rem;
+        }
+
+        .badge.difficulty-easy {
+            background: #27ae60;
+        }
+
+        .badge.difficulty-medium {
+            background: #f39c12;
+        }
+
+        .badge.difficulty-hard {
+            background: #e74c3c;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">⚽ SportCommunity</div>
+                <ul class="nav-links">
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#routes">Rutas</a></li>
+                    <li><a href="#activities">Actividades</a></li>
+                    <li><a href="#nutrition">Nutrición</a></li>
+                </ul>
+                <button class="logout-btn">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>¡Bienvenido, Juan! 🏃‍♂️</h1>
+                    <p>Explora rutas, sigue a otros deportistas y alcanza tus objetivos de fitness</p>
+                </div>
+                <div class="user-info">
+                    <div class="avatar">J</div>
+                    <div>
+                        <strong>Juan Pérez</strong><br>
+                        <small>Desde Feb 2026</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Actividades</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">85.5 km</div>
+                    <div class="stat-label">Distancia Total</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">6,240 cal</div>
+                    <div class="stat-label">Calorías Quemadas</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">124 hrs</div>
+                    <div class="stat-label">Tiempo Total</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Sections -->
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">🏃</div>
+                <h3>Registrar Actividad</h3>
+                <p>Registra tu entrenamiento: distancia, tiempo, pasos y calorías. Se calculan automáticamente.</p>
+                <button class="btn" style="margin-top: 1rem;">Registrar Ahora</button>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🍽️</div>
+                <h3>Nutrición</h3>
+                <p>Registra lo que comes. El sistema calcula automáticamente calorías, proteínas, carbohidratos y grasas.</p>
+                <button class="btn" style="margin-top: 1rem;">Añadir Alimentos</button>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🗺️</div>
+                <h3>Crear Ruta</h3>
+                <p>Diseña una ruta para compartir con la comunidad. Especifica distancia, dificultad y tipo de deporte.</p>
+                <button class="btn" style="margin-top: 1rem;">Nueva Ruta</button>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div style="margin-bottom: 2rem;">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab1')">Rutas Populares</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab2')">Mis Rutas</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab3')">Actividades Recientes</button>
+            </div>
+
+            <div id="tab1" class="tab-content active">
+                <div class="grid">
+                    <div class="route-card">
+                        <div class="route-title">Ruta Montaña del Perdón</div>
+                        <div class="route-info">
+                            <span>📍 Granada, España</span>
+                            <span>🏃‍♂️ Correr</span>
+                            <span>⏱️ 45 min</span>
+                        </div>
+                        <div class="route-info">
+                            <span>📏 12.5 km</span>
+                            <span>👥 28 participantes</span>
+                        </div>
+                        <div>
+                            <span class="badge difficulty-medium">Medio</span>
+                        </div>
+                        <button class="btn" style="margin-top: 1rem;">Unirse a Ruta</button>
+                    </div>
+
+                    <div class="route-card">
+                        <div class="route-title">Ciclovía Urbana Centro</div>
+                        <div class="route-info">
+                            <span>📍 Madrid, España</span>
+                            <span>🚴 Ciclismo</span>
+                            <span>⏱️ 30 min</span>
+                        </div>
+                        <div class="route-info">
+                            <span>📏 8.2 km</span>
+                            <span>👥 15 participantes</span>
+                        </div>
+                        <div>
+                            <span class="badge difficulty-easy">Fácil</span>
+                        </div>
+                        <button class="btn" style="margin-top: 1rem;">Unirse a Ruta</button>
+                    </div>
+
+                    <div class="route-card">
+                        <div class="route-title">Ruta Desafiante Picacho</div>
+                        <div class="route-info">
+                            <span>📍 Bogotá, Colombia</span>
+                            <span>🏃‍♂️ Correr</span>
+                            <span>⏱️ 90 min</span>
+                        </div>
+                        <div class="route-info">
+                            <span>📏 18.7 km</span>
+                            <span>👥 42 participantes</span>
+                        </div>
+                        <div>
+                            <span class="badge difficulty-hard">Difícil</span>
+                        </div>
+                        <button class="btn" style="margin-top: 1rem;">Unirse a Ruta</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab2" class="tab-content">
+                <div class="route-card">
+                    <div class="route-title">Mi Ruta: Parque Central 🌳</div>
+                    <div class="route-info">
+                        <span>📍 Localidad</span>
+                        <span>🏃‍♂️ Correr/Ciclismo</span>
+                        <span>⏱️ 60 min</span>
+                    </div>
+                    <div class="route-info">
+                        <span>📏 15 km</span>
+                        <span>👥 8 participantes</span>
+                    </div>
+                    <div>
+                        <span class="badge">Mixto</span>
+                    </div>
+                    <p style="margin-top: 1rem; color: #666;">Hermosa ruta por el parque central con vistas espectaculares. Ideal para cualquier nivel.</p>
+                    <button class="btn" style="margin-top: 1rem;">Editar Ruta</button>
+                    <button class="btn btn-secondary" style="margin-top: 1rem; margin-left: 0.5rem;">Ver Reseñas</button>
+                </div>
+            </div>
+
+            <div id="tab3" class="tab-content">
+                <div class="route-card">
+                    <div class="route-title">Actividad: Correr - Hoy 10:30 AM</div>
+                    <div class="route-info">
+                        <span>📏 10.2 km</span>
+                        <span>⏱️ 52 min</span>
+                        <span>⚡ 586 cal</span>
+                    </div>
+                    <div class="route-info">
+                        <span>❤️ 145 ppm promedio</span>
+                        <span>👟 11,230 pasos</span>
+                    </div>
+                    <p style="margin-top: 1rem; color: #666;">Excelente sesión de entrenamiento. Ritmo consistente.</p>
+                </div>
+
+                <div class="route-card" style="margin-top: 1rem;">
+                    <div class="route-title">Actividad: Ciclismo - Ayer 3:00 PM</div>
+                    <div class="route-info">
+                        <span>📏 22.5 km</span>
+                        <span>⏱️ 85 min</span>
+                        <span>⚡ 742 cal</span>
+                    </div>
+                    <div class="route-info">
+                        <span>❤️ 152 ppm promedio</span>
+                        <span>🚴 Velocidad: 16 km/h</span>
+                    </div>
+                    <p style="margin-top: 1rem; color: #666;">Ruta rápida. Buena explosividad.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forms Section -->
+        <div class="grid">
+            <div class="form-section">
+                <h2>📝 Registrar Actividad</h2>
+                <div class="form-group">
+                    <label>Tipo de Actividad</label>
+                    <select>
+                        <option>Correr</option>
+                        <option>Ciclismo</option>
+                        <option>Caminar</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Distancia (km)</label>
+                        <input type="number" placeholder="10.5" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Duración (minutos)</label>
+                        <input type="number" placeholder="45">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Pasos (opcional)</label>
+                        <input type="number" placeholder="10000">
+                    </div>
+                    <div class="form-group">
+                        <label>Peso (kg)</label>
+                        <input type="number" placeholder="70" step="0.1">
+                    </div>
+                </div>
+                <button class="btn" style="width: 100%; margin-top: 1rem;">Registrar Actividad</button>
+            </div>
+
+            <div class="form-section">
+                <h2>🍽️ Registrar Alimentación</h2>
+                <div class="form-group">
+                    <label>Tipo de Comida</label>
+                    <select>
+                        <option>Desayuno</option>
+                        <option>Almuerzo</option>
+                        <option>Cena</option>
+                        <option>Merienda</option>
+                        <option>Durante la actividad</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Alimento</label>
+                    <input type="text" placeholder="Ej: Manzana, Pollo, Pan...">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Calorías</label>
+                        <input type="number" placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Proteína (g)</label>
+                        <input type="number" placeholder="0" step="0.1">
+                    </div>
+                </div>
+                <p style="color: #999; font-size: 12px; margin-top: 1rem;">💡 El sistema calcula automáticamente toda la información nutricional</p>
+                <button class="btn" style="width: 100%; margin-top: 1rem;">Registrar Alimento</button>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="form-section" style="margin-top: 2rem; margin-bottom: 3rem;">
+            <h2>📸 Reseñas y Fotos del Lugar</h2>
+            <div class="form-group">
+                <label>Título de la Reseña</label>
+                <input type="text" placeholder="Ej: ¡Hermosas vistas desde la cima!">
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea placeholder="Comparte tu experiencia en esta ruta..." rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Calificación</label>
+                <select>
+                    <option>⭐ 5 Estrellas - Excelente</option>
+                    <option>⭐⭐⭐⭐ 4 Estrellas - Muy Bueno</option>
+                    <option>⭐⭐⭐ 3 Estrellas - Bueno</option>
+                    <option>⭐⭐ 2 Estrellas - Regular</option>
+                    <option>⭐ 1 Estrella - Pobre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cargar Fotos</label>
+                <input type="file" multiple accept="image/*">
+            </div>
+            <button class="btn" style="width: 100%; margin-top: 1rem;">Publicar Reseña</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>🏆 SportCommunity - Juntos llegamos más lejos | Creando una comunidad sana y conectada</p>
+    </footer>
+
+    <script>
+        function switchTab(event, tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Alert para botones
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (e.target.textContent.includes('Cerrar')) {
+                    alert('Sesión cerrada');
+                } else {
+                    alert('Acción: ' + this.textContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
