@@ -35,14 +35,10 @@ const SPORTS_BY_CATEGORY = [
     category: 'Equipo y cancha',
     sports: [
       { value: 'football', label: 'Futbol' },
-      { value: 'futsal', label: 'Futbol sala' },
       { value: 'basketball', label: 'Baloncesto' },
-      { value: 'handball', label: 'Balonmano' },
       { value: 'volleyball', label: 'Voleibol' },
-      { value: 'beach_volley', label: 'Voley playa' },
       { value: 'rugby', label: 'Rugby' },
       { value: 'baseball', label: 'Beisbol' },
-      { value: 'softball', label: 'Softbol' },
       { value: 'hockey', label: 'Hockey' },
     ],
   },
@@ -55,72 +51,17 @@ const SPORTS_BY_CATEGORY = [
       { value: 'table_tennis', label: 'Tenis de mesa' },
       { value: 'squash', label: 'Squash' },
       { value: 'pickleball', label: 'Pickleball' },
-      { value: 'fronton', label: 'Fronton' },
     ],
   },
   {
-    category: 'Fuerza y fitness',
+    category: 'Fuerza y combate',
     sports: [
-      { value: 'gym', label: 'Gimnasio / musculacion' },
+      { value: 'gym', label: 'Gimnasio' },
       { value: 'crossfit', label: 'CrossFit' },
       { value: 'calisthenics', label: 'Calistenia' },
-      { value: 'functional', label: 'Entrenamiento funcional' },
-      { value: 'bodybuilding', label: 'Culturismo' },
-      { value: 'powerlifting', label: 'Powerlifting' },
-      { value: 'weightlifting', label: 'Halterofilia' },
-    ],
-  },
-  {
-    category: 'Combate y artes marciales',
-    sports: [
       { value: 'boxing', label: 'Boxeo' },
-      { value: 'kickboxing', label: 'Kickboxing' },
       { value: 'mma', label: 'MMA' },
       { value: 'judo', label: 'Judo' },
-      { value: 'karate', label: 'Karate' },
-      { value: 'taekwondo', label: 'Taekwondo' },
-      { value: 'bjj', label: 'Brazilian Jiu-Jitsu' },
-      { value: 'wrestling', label: 'Lucha' },
-    ],
-  },
-  {
-    category: 'Montana y aventura',
-    sports: [
-      { value: 'climbing', label: 'Escalada' },
-      { value: 'mountaineering', label: 'Montanismo' },
-      { value: 'canyoning', label: 'Barranquismo' },
-      { value: 'paragliding', label: 'Parapente' },
-      { value: 'skate', label: 'Skate' },
-      { value: 'bmx', label: 'BMX' },
-    ],
-  },
-  {
-    category: 'Invierno',
-    sports: [
-      { value: 'ski_alpine', label: 'Esqui alpino' },
-      { value: 'ski_nordic', label: 'Esqui nordico' },
-      { value: 'snowboard', label: 'Snowboard' },
-      { value: 'ice_skating', label: 'Patinaje sobre hielo' },
-      { value: 'ice_hockey', label: 'Hockey hielo' },
-    ],
-  },
-  {
-    category: 'Motor',
-    sports: [
-      { value: 'motocross', label: 'Motocross' },
-      { value: 'karting', label: 'Karting' },
-      { value: 'rally', label: 'Rally' },
-      { value: 'simracing', label: 'Simracing' },
-    ],
-  },
-  {
-    category: 'Otros',
-    sports: [
-      { value: 'dance', label: 'Baile deportivo' },
-      { value: 'yoga', label: 'Yoga' },
-      { value: 'pilates', label: 'Pilates' },
-      { value: 'chess', label: 'Ajedrez' },
-      { value: 'other', label: 'Otro' },
     ],
   },
 ];
@@ -151,102 +92,111 @@ export default function Register() {
     } catch (err) {
       setError(
         err.response?.data?.error
-          || (err.request ? 'No se pudo conectar con la API. Verifica backend y VITE_API_URL.' : 'Error al registrarse')
+        || (err.request ? 'No se pudo conectar con la API. Verifica backend y VITE_API_URL.' : 'Error al registrarse')
       );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Unete a SportCommunity</h1>
+    <div className="auth-layout">
+      <div className="auth-wrap">
+        <aside className="auth-side">
+          <h1 className="auth-side-title">Crea tu base</h1>
+          <p className="text-slate-300">
+            Define tu perfil deportivo y empieza a registrar actividad, nutricion y rutas desde hoy.
+          </p>
+          <div className="auth-side-list">
+            <div className="auth-side-item">Seleccion por categorias deportivas</div>
+            <div className="auth-side-item">Panel central para tu progreso</div>
+            <div className="auth-side-item">Experiencia fluida y ordenada</div>
+          </div>
+        </aside>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-              {error}
+        <section className="auth-card">
+          <h2 className="auth-title">Crear cuenta</h2>
+          <p className="auth-sub">Configura tu perfil inicial.</p>
+
+          <form onSubmit={handleSubmit} className="form-stack">
+            {error && <div className="error-box">{error}</div>}
+
+            <input
+              type="text"
+              name="username"
+              placeholder="Usuario"
+              value={formData.username}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <input
+                type="text"
+                name="firstName"
+                placeholder="Nombre"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="form-control"
+              />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Apellido"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="form-control"
+              />
             </div>
-          )}
 
-          <input
-            type="text"
-            name="username"
-            placeholder="Usuario"
-            value={formData.username}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+            <input
+              type="password"
+              name="password"
+              placeholder="Contrasena"
+              value={formData.password}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+            <select
+              name="sportPreference"
+              value={formData.sportPreference}
+              onChange={handleChange}
+              className="form-control"
+            >
+              {SPORTS_BY_CATEGORY.map((group) => (
+                <optgroup key={group.category} label={group.category}>
+                  {group.sports.map((sport) => (
+                    <option key={sport.value} value={sport.value}>
+                      {sport.label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
 
-          <input
-            type="text"
-            name="firstName"
-            placeholder="Nombre"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+            <button type="submit" className="primary-btn w-full">
+              Crear cuenta y entrar
+            </button>
+          </form>
 
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Apellido"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Contrasena"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-
-          <select
-            name="sportPreference"
-            value={formData.sportPreference}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {SPORTS_BY_CATEGORY.map((group) => (
-              <optgroup key={group.category} label={group.category}>
-                {group.sports.map((sport) => (
-                  <option key={sport.value} value={sport.value}>
-                    {sport.label}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition"
-          >
-            Registrarse
-          </button>
-        </form>
-
-        <p className="text-center text-gray-600 mt-4">
-          Ya tienes cuenta?{' '}
-          <Link to="/login" className="text-blue-500 hover:underline">
-            Inicia sesion
-          </Link>
-        </p>
+          <p className="mt-5 text-sm text-slate-600">
+            Ya tienes cuenta?{' '}
+            <Link to="/login" className="auth-link">
+              Inicia sesion
+            </Link>
+          </p>
+        </section>
       </div>
     </div>
   );

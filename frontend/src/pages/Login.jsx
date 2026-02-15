@@ -17,55 +17,63 @@ export default function Login() {
     } catch (err) {
       setError(
         err.response?.data?.error
-          || (err.request ? 'No se pudo conectar con la API. Verifica backend y VITE_API_URL.' : 'Error al iniciar sesion')
+        || (err.request ? 'No se pudo conectar con la API. Verifica backend y VITE_API_URL.' : 'Error al iniciar sesion')
       );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">SportCommunity</h1>
+    <div className="auth-layout">
+      <div className="auth-wrap">
+        <aside className="auth-side">
+          <h1 className="auth-side-title">Entrena mejor</h1>
+          <p className="text-slate-300">
+            Gestiona entrenamientos, nutricion y rutas en un solo panel. Diseno limpio, enfoque total en rendimiento.
+          </p>
+          <div className="auth-side-list">
+            <div className="auth-side-item">Seguimiento diario de actividades</div>
+            <div className="auth-side-item">Control nutricional por comidas</div>
+            <div className="auth-side-item">Planificacion de rutas deportivas</div>
+          </div>
+        </aside>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
+        <section className="auth-card">
+          <h2 className="auth-title">Iniciar sesion</h2>
+          <p className="auth-sub">Accede a tu panel deportivo.</p>
 
-          <input
-            type="text"
-            placeholder="Usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <form onSubmit={handleSubmit} className="form-stack">
+            {error && <div className="error-box">{error}</div>}
 
-          <input
-            type="password"
-            placeholder="Contrasena"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+            <input
+              type="text"
+              placeholder="Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="form-control"
+              required
+            />
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition"
-          >
-            Iniciar sesion
-          </button>
-        </form>
+            <input
+              type="password"
+              placeholder="Contrasena"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form-control"
+              required
+            />
 
-        <p className="text-center text-gray-600 mt-4">
-          No tienes cuenta?{' '}
-          <Link to="/register" className="text-blue-500 hover:underline">
-            Registrate aqui
-          </Link>
-        </p>
+            <button type="submit" className="primary-btn w-full">
+              Entrar al panel
+            </button>
+          </form>
+
+          <p className="mt-5 text-sm text-slate-600">
+            No tienes cuenta?{' '}
+            <Link to="/register" className="auth-link">
+              Registrate aqui
+            </Link>
+          </p>
+        </section>
       </div>
     </div>
   );
