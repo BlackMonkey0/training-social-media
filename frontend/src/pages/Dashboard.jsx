@@ -56,15 +56,15 @@ export default function Dashboard() {
           <div className="summary-grid">
             <button onClick={() => setActiveSection('activities')} className="summary-card">
               <h3 className="text-2xl font-bold mb-2">Mis Actividades</h3>
-              <p className="text-slate-200">Registra entrenamientos y mide progreso.</p>
+              <p className="text-slate-600">Registra entrenamientos y mide progreso.</p>
             </button>
             <button onClick={() => setActiveSection('nutrition')} className="summary-card">
               <h3 className="text-2xl font-bold mb-2">Nutricion</h3>
-              <p className="text-slate-200">Organiza comidas y seguimiento diario.</p>
+              <p className="text-slate-600">Organiza comidas y seguimiento diario.</p>
             </button>
             <button onClick={() => setActiveSection('routes')} className="summary-card">
               <h3 className="text-2xl font-bold mb-2">Rutas</h3>
-              <p className="text-slate-200">Crea recorridos y guarda tus favoritos.</p>
+              <p className="text-slate-600">Crea recorridos y guarda tus favoritos.</p>
             </button>
           </div>
         );
