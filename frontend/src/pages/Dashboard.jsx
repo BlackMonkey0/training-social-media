@@ -27,7 +27,7 @@ export default function Dashboard() {
   }, [token, user, fetchProfile]);
 
   if (isLoading || !user) {
-    return <div className="text-center mt-10">Cargando...</div>;
+    return <div className="text-center mt-10 text-white">Cargando...</div>;
   }
 
   const renderSection = () => {
@@ -40,9 +40,9 @@ export default function Dashboard() {
         return <RouteCreator />;
       case 'profile':
         return (
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-2xl font-bold mb-4">Tu perfil</h2>
-            <div className="space-y-2 text-gray-700">
+          <div className="panel-card">
+            <h2 className="section-title">Tu perfil</h2>
+            <div className="space-y-2 text-slate-700">
               <p><span className="font-semibold">Usuario:</span> {user.username}</p>
               <p><span className="font-semibold">Email:</span> {user.email || 'Sin email'}</p>
               <p><span className="font-semibold">Nombre:</span> {user.firstName || '-'} {user.lastName || ''}</p>
@@ -53,27 +53,18 @@ export default function Dashboard() {
       case 'overview':
       default:
         return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <button
-              onClick={() => setActiveSection('activities')}
-              className="text-left bg-white rounded-lg shadow p-6 hover:shadow-md transition"
-            >
-              <h3 className="text-xl font-bold mb-2">Mis Actividades</h3>
-              <p className="text-gray-600">Registra tus entrenamientos y progreso.</p>
+          <div className="summary-grid">
+            <button onClick={() => setActiveSection('activities')} className="summary-card">
+              <h3 className="text-2xl font-bold mb-2">Mis Actividades</h3>
+              <p className="text-slate-200">Registra entrenamientos y mide progreso.</p>
             </button>
-            <button
-              onClick={() => setActiveSection('nutrition')}
-              className="text-left bg-white rounded-lg shadow p-6 hover:shadow-md transition"
-            >
-              <h3 className="text-xl font-bold mb-2">Nutricion</h3>
-              <p className="text-gray-600">Controla comidas y macros de forma simple.</p>
+            <button onClick={() => setActiveSection('nutrition')} className="summary-card">
+              <h3 className="text-2xl font-bold mb-2">Nutricion</h3>
+              <p className="text-slate-200">Organiza comidas y seguimiento diario.</p>
             </button>
-            <button
-              onClick={() => setActiveSection('routes')}
-              className="text-left bg-white rounded-lg shadow p-6 hover:shadow-md transition"
-            >
-              <h3 className="text-xl font-bold mb-2">Rutas</h3>
-              <p className="text-gray-600">Crea rutas para correr, caminar o ciclismo.</p>
+            <button onClick={() => setActiveSection('routes')} className="summary-card">
+              <h3 className="text-2xl font-bold mb-2">Rutas</h3>
+              <p className="text-slate-200">Crea recorridos y guarda tus favoritos.</p>
             </button>
           </div>
         );
@@ -81,37 +72,28 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-blue-600">SportCommunity</h1>
-          <button
-            onClick={logout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Cerrar sesion
-          </button>
+    <div className="app-shell">
+      <nav className="topbar">
+        <div className="topbar-inner">
+          <h1 className="brand">SportCommunity</h1>
+          <button onClick={logout} className="danger-btn">Cerrar sesion</button>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <h2 className="text-3xl font-bold mb-2">Bienvenido, {user.firstName || user.username}</h2>
-          <p className="text-gray-600">Usa el menu para moverte por la plataforma.</p>
+      <div className="main-wrap">
+        <div className="hero-card">
+          <h2 className="text-4xl font-bold mb-2">Bienvenido, {user.firstName || user.username}</h2>
+          <p className="hero-sub">Panel deportivo centralizado para entrenar, comer y planificar mejor.</p>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="menu-row">
           {SECTIONS.map((section) => {
             const isActive = activeSection === section.key;
             return (
               <button
                 key={section.key}
                 onClick={() => setActiveSection(section.key)}
-                className={`px-4 py-2 rounded border ${
-                  isActive
-                    ? 'bg-blue-600 border-blue-600 text-white'
-                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
-                }`}
+                className={`tab-btn ${isActive ? 'tab-btn-active' : ''}`}
               >
                 {section.label}
               </button>

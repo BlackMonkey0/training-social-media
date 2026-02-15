@@ -62,23 +62,18 @@ export default function RouteCreator() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">Crear nueva ruta</h2>
+      <div className="panel-card">
+        <h2 className="section-title">Crear nueva ruta</h2>
+        {message && <div className="info-banner">{message}</div>}
 
-        {message && (
-          <div className="mb-4 p-3 rounded bg-blue-100 text-blue-800">
-            {message}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="form-stack">
           <input
             type="text"
             name="title"
             placeholder="Nombre de la ruta"
             value={formData.title}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
             required
           />
 
@@ -87,7 +82,7 @@ export default function RouteCreator() {
             placeholder="Descripcion de la ruta"
             value={formData.description}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
             rows="3"
           />
 
@@ -97,7 +92,7 @@ export default function RouteCreator() {
             placeholder="Ubicacion"
             value={formData.location}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
           />
 
           <input
@@ -107,7 +102,7 @@ export default function RouteCreator() {
             value={formData.distance}
             onChange={handleChange}
             step="0.1"
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
             required
           />
 
@@ -117,7 +112,7 @@ export default function RouteCreator() {
             placeholder="Duracion estimada (minutos)"
             value={formData.duration}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
             required
           />
 
@@ -125,7 +120,7 @@ export default function RouteCreator() {
             name="sportType"
             value={formData.sportType}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
           >
             <option value="running">Correr</option>
             <option value="cycling">Ciclismo</option>
@@ -136,33 +131,27 @@ export default function RouteCreator() {
             name="difficulty"
             value={formData.difficulty}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
           >
             <option value="easy">Facil</option>
             <option value="medium">Media</option>
             <option value="hard">Dificil</option>
           </select>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading} className="primary-btn w-full">
             {loading ? 'Guardando...' : 'Guardar ruta'}
           </button>
         </form>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-xl font-bold mb-3">Tus rutas creadas</h3>
-        {routes.length === 0 && <p className="text-gray-600">Aun no tienes rutas.</p>}
-        <div className="space-y-2">
+      <div className="panel-card">
+        <h3 className="section-title">Tus rutas creadas</h3>
+        {routes.length === 0 && <p className="helper-text">Aun no tienes rutas.</p>}
+        <div className="list-stack">
           {routes.slice(0, 8).map((route) => (
-            <div key={route.id} className="border rounded p-3">
-              <p className="font-semibold">{route.title}</p>
-              <p className="text-sm text-gray-600">
-                {route.distance} km · {route.duration} min · {route.sportType}
-              </p>
+            <div key={route.id} className="list-item">
+              <p className="list-item-title">{route.title}</p>
+              <p className="list-item-meta">{route.distance} km · {route.duration} min · {route.sportType}</p>
             </div>
           ))}
         </div>

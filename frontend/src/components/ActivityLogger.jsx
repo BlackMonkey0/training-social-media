@@ -61,21 +61,17 @@ export default function ActivityLogger() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">Registrar actividad</h2>
+      <div className="panel-card">
+        <h2 className="section-title">Registrar actividad</h2>
 
-        {message && (
-          <div className="mb-4 p-3 rounded bg-blue-100 text-blue-800">
-            {message}
-          </div>
-        )}
+        {message && <div className="info-banner">{message}</div>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="form-stack">
           <select
             name="activityType"
             value={formData.activityType}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
           >
             <option value="running">Correr</option>
             <option value="cycling">Ciclismo</option>
@@ -89,7 +85,7 @@ export default function ActivityLogger() {
             value={formData.distance}
             onChange={handleChange}
             step="0.1"
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
             required
           />
 
@@ -99,7 +95,7 @@ export default function ActivityLogger() {
             placeholder="Duracion (minutos)"
             value={formData.duration}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
             required
           />
 
@@ -109,7 +105,7 @@ export default function ActivityLogger() {
             placeholder="Pasos (opcional)"
             value={formData.steps}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
           />
 
           <input
@@ -119,29 +115,23 @@ export default function ActivityLogger() {
             value={formData.weight}
             onChange={handleChange}
             step="0.1"
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
           />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading} className="primary-btn w-full">
             {loading ? 'Guardando...' : 'Guardar actividad'}
           </button>
         </form>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-xl font-bold mb-3">Tus actividades guardadas</h3>
-        {records.length === 0 && <p className="text-gray-600">Aun no tienes actividades.</p>}
-        <div className="space-y-2">
+      <div className="panel-card">
+        <h3 className="section-title">Tus actividades guardadas</h3>
+        {records.length === 0 && <p className="helper-text">Aun no tienes actividades.</p>}
+        <div className="list-stack">
           {records.slice(0, 8).map((record) => (
-            <div key={record.id} className="border rounded p-3">
-              <p className="font-semibold">{record.activityType}</p>
-              <p className="text-sm text-gray-600">
-                {record.distance} km · {record.duration} min
-              </p>
+            <div key={record.id} className="list-item">
+              <p className="list-item-title">{record.activityType}</p>
+              <p className="list-item-meta">{record.distance} km · {record.duration} min</p>
             </div>
           ))}
         </div>

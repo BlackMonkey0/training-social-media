@@ -66,20 +66,15 @@ export default function NutritionLogger() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">Registrar nutricion</h2>
+      <div className="panel-card">
+        <h2 className="section-title">Registrar nutricion</h2>
+        {message && <div className="info-banner">{message}</div>}
 
-        {message && (
-          <div className="mb-4 p-3 rounded bg-blue-100 text-blue-800">
-            {message}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="form-stack">
           <select
             value={mealType}
             onChange={(e) => setMealType(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="form-control"
           >
             <option value="breakfast">Desayuno</option>
             <option value="lunch">Almuerzo</option>
@@ -88,8 +83,8 @@ export default function NutritionLogger() {
             <option value="during_activity">Durante actividad</option>
           </select>
 
-          <div className="border-t pt-4">
-            <h3 className="font-semibold mb-3">Agregar alimentos</h3>
+          <div className="border-t border-slate-200 pt-4">
+            <h3 className="text-2xl font-bold mb-3">Agregar alimentos</h3>
 
             <input
               type="text"
@@ -97,7 +92,7 @@ export default function NutritionLogger() {
               placeholder="Nombre del alimento"
               value={newFood.name}
               onChange={handleFoodChange}
-              className="w-full px-4 py-2 border rounded-lg mb-2"
+              className="form-control mb-2"
             />
 
             <input
@@ -106,7 +101,7 @@ export default function NutritionLogger() {
               placeholder="Calorias"
               value={newFood.calories}
               onChange={handleFoodChange}
-              className="w-full px-4 py-2 border rounded-lg mb-2"
+              className="form-control mb-2"
               step="0.1"
             />
 
@@ -116,50 +111,41 @@ export default function NutritionLogger() {
               placeholder="Proteina (g)"
               value={newFood.protein}
               onChange={handleFoodChange}
-              className="w-full px-4 py-2 border rounded-lg mb-2"
+              className="form-control mb-2"
               step="0.1"
             />
 
-            <button
-              type="button"
-              onClick={addFood}
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mb-4"
-            >
+            <button type="button" onClick={addFood} className="primary-btn w-full mb-4">
               Agregar alimento
             </button>
 
             {foods.length > 0 && (
               <div className="mb-4">
-                <h4 className="font-semibold mb-2">Alimentos agregados</h4>
+                <h4 className="text-xl font-bold mb-2">Alimentos agregados</h4>
                 {foods.map((food, idx) => (
-                  <div key={`${food.name}-${idx}`} className="bg-gray-100 p-2 rounded mb-2">
-                    <p>{food.name} - {food.calories} cal</p>
+                  <div key={`${food.name}-${idx}`} className="list-item mb-2">
+                    <p className="list-item-title">{food.name}</p>
+                    <p className="list-item-meta">{food.calories} cal</p>
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading} className="primary-btn w-full">
             {loading ? 'Guardando...' : 'Guardar nutricion'}
           </button>
         </form>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-xl font-bold mb-3">Tus registros nutricionales</h3>
-        {records.length === 0 && <p className="text-gray-600">Aun no tienes registros.</p>}
-        <div className="space-y-2">
+      <div className="panel-card">
+        <h3 className="section-title">Tus registros nutricionales</h3>
+        {records.length === 0 && <p className="helper-text">Aun no tienes registros.</p>}
+        <div className="list-stack">
           {records.slice(0, 8).map((record) => (
-            <div key={record.id} className="border rounded p-3">
-              <p className="font-semibold">{record.mealType}</p>
-              <p className="text-sm text-gray-600">
-                {record.foods?.length || 0} alimento(s)
-              </p>
+            <div key={record.id} className="list-item">
+              <p className="list-item-title">{record.mealType}</p>
+              <p className="list-item-meta">{record.foods?.length || 0} alimento(s)</p>
             </div>
           ))}
         </div>
