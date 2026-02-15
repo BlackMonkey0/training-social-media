@@ -2,6 +2,129 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../services/authStore';
 
+const SPORTS_BY_CATEGORY = [
+  {
+    category: 'Resistencia y cardio',
+    sports: [
+      { value: 'running', label: 'Running' },
+      { value: 'trail_running', label: 'Trail running' },
+      { value: 'walking', label: 'Caminata deportiva' },
+      { value: 'hiking', label: 'Senderismo' },
+      { value: 'cycling', label: 'Ciclismo' },
+      { value: 'mtb', label: 'Mountain bike (MTB)' },
+      { value: 'spinning', label: 'Spinning' },
+      { value: 'triathlon', label: 'Triatlon' },
+      { value: 'duathlon', label: 'Duatlon' },
+    ],
+  },
+  {
+    category: 'Acuaticos',
+    sports: [
+      { value: 'swimming', label: 'Natacion' },
+      { value: 'open_water', label: 'Aguas abiertas' },
+      { value: 'water_polo', label: 'Waterpolo' },
+      { value: 'rowing', label: 'Remo' },
+      { value: 'canoeing', label: 'Piraguismo / canoa' },
+      { value: 'surf', label: 'Surf' },
+      { value: 'paddle_surf', label: 'Paddle surf' },
+      { value: 'kitesurf', label: 'Kitesurf' },
+      { value: 'sailing', label: 'Vela' },
+    ],
+  },
+  {
+    category: 'Equipo y cancha',
+    sports: [
+      { value: 'football', label: 'Futbol' },
+      { value: 'futsal', label: 'Futbol sala' },
+      { value: 'basketball', label: 'Baloncesto' },
+      { value: 'handball', label: 'Balonmano' },
+      { value: 'volleyball', label: 'Voleibol' },
+      { value: 'beach_volley', label: 'Voley playa' },
+      { value: 'rugby', label: 'Rugby' },
+      { value: 'baseball', label: 'Beisbol' },
+      { value: 'softball', label: 'Softbol' },
+      { value: 'hockey', label: 'Hockey' },
+    ],
+  },
+  {
+    category: 'Raqueta y pala',
+    sports: [
+      { value: 'tennis', label: 'Tenis' },
+      { value: 'padel', label: 'Padel' },
+      { value: 'badminton', label: 'Badminton' },
+      { value: 'table_tennis', label: 'Tenis de mesa' },
+      { value: 'squash', label: 'Squash' },
+      { value: 'pickleball', label: 'Pickleball' },
+      { value: 'fronton', label: 'Fronton' },
+    ],
+  },
+  {
+    category: 'Fuerza y fitness',
+    sports: [
+      { value: 'gym', label: 'Gimnasio / musculacion' },
+      { value: 'crossfit', label: 'CrossFit' },
+      { value: 'calisthenics', label: 'Calistenia' },
+      { value: 'functional', label: 'Entrenamiento funcional' },
+      { value: 'bodybuilding', label: 'Culturismo' },
+      { value: 'powerlifting', label: 'Powerlifting' },
+      { value: 'weightlifting', label: 'Halterofilia' },
+    ],
+  },
+  {
+    category: 'Combate y artes marciales',
+    sports: [
+      { value: 'boxing', label: 'Boxeo' },
+      { value: 'kickboxing', label: 'Kickboxing' },
+      { value: 'mma', label: 'MMA' },
+      { value: 'judo', label: 'Judo' },
+      { value: 'karate', label: 'Karate' },
+      { value: 'taekwondo', label: 'Taekwondo' },
+      { value: 'bjj', label: 'Brazilian Jiu-Jitsu' },
+      { value: 'wrestling', label: 'Lucha' },
+    ],
+  },
+  {
+    category: 'Montana y aventura',
+    sports: [
+      { value: 'climbing', label: 'Escalada' },
+      { value: 'mountaineering', label: 'Montanismo' },
+      { value: 'canyoning', label: 'Barranquismo' },
+      { value: 'paragliding', label: 'Parapente' },
+      { value: 'skate', label: 'Skate' },
+      { value: 'bmx', label: 'BMX' },
+    ],
+  },
+  {
+    category: 'Invierno',
+    sports: [
+      { value: 'ski_alpine', label: 'Esqui alpino' },
+      { value: 'ski_nordic', label: 'Esqui nordico' },
+      { value: 'snowboard', label: 'Snowboard' },
+      { value: 'ice_skating', label: 'Patinaje sobre hielo' },
+      { value: 'ice_hockey', label: 'Hockey hielo' },
+    ],
+  },
+  {
+    category: 'Motor',
+    sports: [
+      { value: 'motocross', label: 'Motocross' },
+      { value: 'karting', label: 'Karting' },
+      { value: 'rally', label: 'Rally' },
+      { value: 'simracing', label: 'Simracing' },
+    ],
+  },
+  {
+    category: 'Otros',
+    sports: [
+      { value: 'dance', label: 'Baile deportivo' },
+      { value: 'yoga', label: 'Yoga' },
+      { value: 'pilates', label: 'Pilates' },
+      { value: 'chess', label: 'Ajedrez' },
+      { value: 'other', label: 'Otro' },
+    ],
+  },
+];
+
 export default function Register() {
   const [formData, setFormData] = React.useState({
     username: '',
@@ -9,7 +132,7 @@ export default function Register() {
     password: '',
     firstName: '',
     lastName: '',
-    sportPreference: 'both',
+    sportPreference: 'running',
   });
   const [error, setError] = React.useState('');
   const register = useAuthStore((state) => state.register);
@@ -26,7 +149,10 @@ export default function Register() {
       await register(formData);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al registrarse');
+      setError(
+        err.response?.data?.error
+          || (err.request ? 'No se pudo conectar con la API. Verifica backend y VITE_API_URL.' : 'Error al registrarse')
+      );
     }
   };
 
@@ -96,9 +222,15 @@ export default function Register() {
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="running">Correr</option>
-            <option value="cycling">Ciclismo</option>
-            <option value="both">Ambos</option>
+            {SPORTS_BY_CATEGORY.map((group) => (
+              <optgroup key={group.category} label={group.category}>
+                {group.sports.map((sport) => (
+                  <option key={sport.value} value={sport.value}>
+                    {sport.label}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
           </select>
 
           <button

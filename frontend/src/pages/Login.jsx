@@ -15,7 +15,10 @@ export default function Login() {
       await login(username, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al iniciar sesion');
+      setError(
+        err.response?.data?.error
+          || (err.request ? 'No se pudo conectar con la API. Verifica backend y VITE_API_URL.' : 'Error al iniciar sesion')
+      );
     }
   };
 
