@@ -45,7 +45,8 @@ export async function logNutrition(req, res) {
 export async function getNutritionLogs(req, res) {
   try {
     const userId = req.user.userId;
-    const { limit = 30, offset = 0 } = req.query;
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit, 10) || 30, 100));
+    const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);
 
     const result = await query(
       `SELECT id, meal_type, food_items, total_calories, total_protein, total_carbs, total_fats, total_fiber, logged_at
@@ -139,3 +140,4 @@ export async function addFoodCustom(req, res) {
     res.status(500).json({ error: 'Error al crear alimento' });
   }
 }
+

@@ -251,12 +251,14 @@ export async function joinRoute(req, res) {
       [routeId, userId]
     );
 
-    res.status(201).json({
-      message: '¡Te has unido a la ruta!',
-      joined: true,
+    const joined = result.rows.length > 0;
+    res.status(joined ? 201 : 200).json({
+      message: joined ? 'Te has unido a la ruta' : 'Ya estabas unido a esta ruta',
+      joined,
     });
   } catch (error) {
     console.error('Error al unirse a la ruta:', error);
     res.status(500).json({ error: 'Error al unirse a la ruta' });
   }
 }
+

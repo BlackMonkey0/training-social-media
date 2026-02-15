@@ -56,7 +56,8 @@ export async function logActivity(req, res) {
 export async function getActivities(req, res) {
   try {
     const userId = req.user.userId;
-    const { limit = 20, offset = 0 } = req.query;
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit, 10) || 20, 100));
+    const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);
 
     const result = await query(
       `SELECT id, activity_type, distance, duration_minutes, calories_burned, steps, elevation_gain, heart_rate_avg, heart_rate_max, started_at, created_at
@@ -152,18 +153,25 @@ export async function syncDeviceData(req, res) {
 }
 
 async function logActivityFromDevice(userId, deviceType, deviceData) {
-  // Extraer datos según el tipo de dispositivo
+  const startAt = new Date(deviceData.startTime);
+  const endAt = new Date(deviceData.endTime);
+  const durationMs = endAt.getTime() - startAt.getTime();
+  const durationMinutes = Number.isFinite(durationMs) && durationMs > 0
+    ? Math.round(durationMs / 60000)
+    : 0;
+
+  // Extraer datos segun el tipo de dispositivo
   let activityData = {
     user_id: userId,
     activity_type: deviceData.activityType || 'running',
     distance: deviceData.distance,
-    duration_minutes: Math.round((deviceData.endTime - deviceData.startTime) / 60),
+    duration_minutes: durationMinutes,
     steps: deviceData.steps,
     calories_burned: deviceData.calories,
     heart_rate_avg: deviceData.avgHeartRate,
     heart_rate_max: deviceData.maxHeartRate,
-    started_at: new Date(deviceData.startTime),
-    ended_at: new Date(deviceData.endTime),
+    started_at: startAt,
+    ended_at: endAt,
     device_data: JSON.stringify({ deviceType, ...deviceData }),
   };
 
@@ -176,3 +184,4 @@ async function logActivityFromDevice(userId, deviceType, deviceData) {
 
   return result.rows[0];
 }
+

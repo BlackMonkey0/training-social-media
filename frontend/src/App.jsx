@@ -12,6 +12,8 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+  const token = useAuthStore((state) => state.token);
+
   return (
     <Router>
       <Routes>
@@ -25,7 +27,8 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to={token ? "/dashboard" : "/login"} replace />} />
+        <Route path="*" element={<Navigate to={token ? "/dashboard" : "/login"} replace />} />
       </Routes>
     </Router>
   );

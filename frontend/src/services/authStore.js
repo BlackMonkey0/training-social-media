@@ -45,12 +45,15 @@ export const useAuthStore = create((set) => ({
   },
 
   fetchProfile: async () => {
+    set({ isLoading: true });
     try {
       const response = await authAPI.getProfile();
-      set({ user: response.data.user });
+      set({ user: response.data.user, isLoading: false });
       return response.data;
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      localStorage.removeItem('token');
+      set({ user: null, token: null, isLoading: false });
+      throw error;
     }
   },
 }));

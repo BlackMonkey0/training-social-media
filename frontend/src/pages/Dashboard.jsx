@@ -3,9 +3,18 @@ import { useAuthStore } from '../services/authStore';
 
 export default function Dashboard() {
   const user = useAuthStore((state) => state.user);
+  const token = useAuthStore((state) => state.token);
+  const isLoading = useAuthStore((state) => state.isLoading);
+  const fetchProfile = useAuthStore((state) => state.fetchProfile);
   const logout = useAuthStore((state) => state.logout);
 
-  if (!user) {
+  React.useEffect(() => {
+    if (token && !user) {
+      fetchProfile().catch(() => {});
+    }
+  }, [token, user, fetchProfile]);
+
+  if (isLoading || !user) {
     return <div className="text-center mt-10">Cargando...</div>;
   }
 
