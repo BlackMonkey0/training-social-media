@@ -11,8 +11,9 @@ import reviewsRoutes from "./src/routes/reviews.routes.js";
 dotenv.config();
 
 const app = express();
+const corsOrigin = process.env.CORS_ORIGIN || "*";
 
-app.use(cors());
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
@@ -36,6 +37,10 @@ app.get("/", (req, res) => {
       reviews: "/api/reviews"
     }
   });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ ok: true, service: "sportcommunity-backend" });
 });
 
 // Manejo de errores global
