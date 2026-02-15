@@ -67,6 +67,20 @@ function loginLocal(username, password) {
   return { user, token: createLocalToken(user) };
 }
 
+function upsertLocalUserProfile(userPatch) {
+  const users = readJson(USERS_KEY, []);
+  const updated = users.map((u) => {
+    if (
+      (userPatch.id && u.id === userPatch.id)
+      || (!userPatch.id && userPatch.username && u.username === userPatch.username)
+    ) {
+      return { ...u, ...userPatch };
+    }
+    return u;
+  });
+  writeJson(USERS_KEY, updated);
+}
+
 function resolveAuthError(error, fallback) {
   if (error?.response?.data?.error) return error.response.data.error;
   if (error?.request) return 'No se pudo conectar con la API. Se usara modo local.';
@@ -151,5 +165,16 @@ export const useAuthStore = create((set) => ({
       set({ user: null, token: null, isLoading: false });
       throw new Error('No session');
     }
+  },
+
+  updateUserLocal: (patch) => {
+    set((state) => {
+      const mergedUser = state.user ? { ...state.user, ...patch } : state.user;
+      if (mergedUser) {
+        writeJson(CURRENT_USER_KEY, mergedUser);
+        upsertLocalUserProfile(mergedUser);
+      }
+      return { user: mergedUser };
+    });
   },
 }));

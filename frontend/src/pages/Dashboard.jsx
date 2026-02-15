@@ -3,6 +3,7 @@ import { useAuthStore } from '../services/authStore';
 import ActivityLogger from '../components/ActivityLogger';
 import NutritionLogger from '../components/NutritionLogger';
 import RouteCreator from '../components/RouteCreator';
+import ProfileManager from '../components/ProfileManager';
 
 const SECTIONS = [
   { key: 'overview', label: 'Resumen' },
@@ -39,17 +40,7 @@ export default function Dashboard() {
       case 'routes':
         return <RouteCreator />;
       case 'profile':
-        return (
-          <div className="panel-card">
-            <h2 className="section-title">Tu perfil</h2>
-            <div className="space-y-2 text-slate-700">
-              <p><span className="font-semibold">Usuario:</span> {user.username}</p>
-              <p><span className="font-semibold">Email:</span> {user.email || 'Sin email'}</p>
-              <p><span className="font-semibold">Nombre:</span> {user.firstName || '-'} {user.lastName || ''}</p>
-              <p><span className="font-semibold">Deporte principal:</span> {user.sportPreference || '-'}</p>
-            </div>
-          </div>
-        );
+        return <ProfileManager />;
       case 'overview':
       default:
         return (
